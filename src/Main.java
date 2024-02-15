@@ -8,9 +8,10 @@ import java.util.List;
 
 public class Main extends JFrame {
     private JTextPane questionTextPane;
-    private JRadioButton[] options;
+    private JRadioButton[][] options;
     private JButton nextButton;
     private ButtonGroup buttonGroup;
+
 
     private String[][] questions = {
             {"Koji je glavni grad Austrije?", "Beč", "London", "Berlin", "Madrid"},
@@ -28,7 +29,37 @@ public class Main extends JFrame {
             {"Mn je simbol kojeg kemijskog elementa?", "Mangana", "Magnezija", "Mendelevija", "Mitohondrija"},
             {"Koje je boje klorofil?", "Zelene", "Žute", "Crvene", "Plave"},
             {"Koji je glavni grad Japana?", "Tokio", "Kyoto", "Osaka", "Sapporo"},
-            {"Gdje se nalazi Eiffelov toranj?", "Pariz", "London", "Berlin", "New York"}
+            {"Gdje se nalazi Eiffelov toranj?", "Pariz", "London", "Berlin", "New York"},
+            {"Koje godine je počeo Prvi svjetski rat?", "1914.", "1915.", "1916.", "1917."},
+            {"Tko je napisao knjigu 'Rat i mir'?", "Lev Tolstoj", "Fjodor Dostojevski", "Ivan Turgenjev", "Anton Pavlovič Čehov"},
+            {"Koji je najduži rijeka u svijetu?", "Nile", "Amazona", "Mississippi", "Yangtze"},
+            {"Koja je najveća planina na Zemlji?", "Mount Everest", "K2", "Kangchenjunga", "Lhotse"},
+            {"Tko je autor knjige 'Harry Potter'?", "J.K. Rowling", "Stephen King", "J.R.R. Tolkien", "C.S. Lewis"},
+            {"Koji je glavni grad Rusije?", "Moskva", "Sankt Peterburg", "Kazanj", "Novosibirsk"},
+            {"Tko je napisao knjigu 'Vojna i mir'?", "Lev Tolstoj", "Fjodor Dostojevski", "Ivan Turgenjev", "Anton Pavlovič Čehov"},
+            {"Koje godine je rođen Albert Einstein?", "1879.", "1881.", "1877.", "1883."},
+            {"Tko je prvi čovjek koji je hodao po Mjesecu?", "Neil Armstrong", "Buzz Aldrin", "Yuri Gagarin", "Alan Shepard"},
+            {"Koji je najveći ocean na Zemlji?", "Tihii", "Atlantski", "Indijski", "Arktički"},
+            {"Koje godine je završio Prvi svjetski rat?", "1918.", "1919.", "1920.", "1921."},
+            {"Tko je autor knjige 'Ana Karenjina'?", "Lev Tolstoj", "Fjodor Dostojevski", "Ivan Turgenjev", "Anton Pavlovič Čehov"},
+            {"Koja je najveća životinja na Zemlji?", "Plavi kit", "Slon", "Gorila", "Krokodil"},
+            {"Koliko planeta ima u Sunčevom sustavu?", "8", "7", "9", "10"},
+            {"Koji je glavni grad Kine?", "Peking", "Šangaj", "Hong Kong", "Guangzhou"},
+            {"Koji je najviši vrh u Europi?", "Elbrus", "Mont Blanc", "Matterhorn", "Monch"},
+            {"Tko je napisao knjigu 'Romeo i Julija'?", "William Shakespeare", "Jane Austen", "Charles Dickens", "Emily Bronte"},
+            {"Koji je najduži rijeka u Europi?", "Volga", "Dunav", "Don", "Dnjepar"},
+            {"Koje godine je počeo Američki građanski rat?", "1861.", "1860.", "1862.", "1863."},
+            {"Tko je napisao knjigu 'Ljudi su iz Marsove kugle'?", "Antun Gustav Matoš", "Miroslav Krleža", "August Šenoa", "Ivan Gundulić"},
+            {"Koja je najveća država na svijetu?", "Rusija", "Kanada", "Kina", "SAD"},
+            {"Koje je glavno sredstvo prijenosa topline u Zemljinoj atmosferi?", "Zrak", "Voda", "Zemlja", "Vatra"},
+            {"Koji je glavni grad Australije?", "Canberra", "Sydney", "Melbourne", "Brisbane"},
+            {"Tko je napisao knjigu 'Gospodar prstenova'?", "J.R.R. Tolkien", "C.S. Lewis", "J.K. Rowling", "Stephen King"},
+            {"Koje godine je potopljen Titanik?", "1912.", "1913.", "1914.", "1915."},
+            {"Tko je prvi otkrio Ameriku?", "Kristofor Kolumbo", "Amerigo Vespucci", "Vasco da Gama", "Ferdinand Magellan"},
+            {"Koji je najveći kontinent na Zemlji?", "Azija", "Afrika", "Sjeverna Amerika", "Južna Amerika"},
+            {"Koja je najčešća krvna grupa kod ljudi?", "A", "B", "AB", "0"},
+            {"Koji je glavni grad Španjolske?", "Madrid", "Barcelona", "Valencia", "Sevilla"},
+            {"Tko je napisao knjigu '1984'?", "George Orwell", "Aldous Huxley", "Ray Bradbury", "Isaac Asimov"}
     };
 
     private int currentQuestionIndex = 0;
@@ -49,24 +80,33 @@ public class Main extends JFrame {
         panel1 = new JPanel();
         add(panel1, BorderLayout.WEST);
 
-        JPanel optionsPanel = new JPanel(new GridLayout(4, 1));
-        options = new JRadioButton[4];
+        JPanel optionsPanel = new JPanel(new GridLayout(2, 2));
+        options = new JRadioButton[2][2];
         buttonGroup = new ButtonGroup();
 
-        for (int i = 0; i < options.length; i++) {
-            options[i] = new JRadioButton();
-            optionsPanel.add(options[i]);
-            buttonGroup.add(options[i]);
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                options[i][j] = new JRadioButton();
+                optionsPanel.add(options[i][j]);
+                buttonGroup.add(options[i][j]);
+                options[i][j].setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
+            }
         }
 
         add(optionsPanel, BorderLayout.CENTER);
 
+
         nextButton = new JButton("Iduće pitanje");
-        nextButton.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+        nextButton.setFont(new Font("Century Gothic", Font.BOLD, 20));
         nextButton.setPreferredSize(new Dimension(200, 60));
         nextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!isAnyRadioButtonSelected()) {
+                    JOptionPane.showMessageDialog(Main.this, "Molimo odaberite odgovor.");
+                    return;
+                }
+
                 checkAnswer();
                 currentQuestionIndex++;
                 if (currentQuestionIndex < questions.length) {
@@ -82,7 +122,7 @@ public class Main extends JFrame {
 
         List<String[]> questionsList = Arrays.asList(questions);
         Collections.shuffle(questionsList);
-        questionsList = questionsList.subList(0, 7);
+        questionsList = questionsList.subList(0, 10);
         questions = questionsList.toArray(new String[0][]);
 
         displayQuestion();
@@ -102,21 +142,35 @@ public class Main extends JFrame {
         String[] optionsCopy = Arrays.copyOfRange(questions[currentQuestionIndex], 1, questions[currentQuestionIndex].length);
         Collections.shuffle(Arrays.asList(optionsCopy));
 
-        for (int i = 0; i < options.length; i++) {
-            options[i].setText(optionsCopy[i]);
-            options[i].setFont(new Font("Century Gothic", Font.PLAIN, 20));
-        }
-    }
-
-    private void checkAnswer() {
-        for (int i = 0; i < options.length; i++) {
-            if (options[i].isSelected() && options[i].getText().equals(questions[currentQuestionIndex][1])) {
-                score++;
-                break;
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                options[i][j].setText(optionsCopy[i * 2 + j]);
+                options[i][j].setFont(new Font("Century Gothic", Font.PLAIN, 20));
             }
         }
     }
 
+    private void checkAnswer() {
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                if (options[i][j].isSelected() && options[i][j].getText().equals(questions[currentQuestionIndex][1])) {
+                    score++;
+                    break;
+                }
+            }
+        }
+    }
+
+    private boolean isAnyRadioButtonSelected() {
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                if (options[i][j].isSelected()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
